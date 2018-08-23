@@ -1,202 +1,119 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>LeeChat</title>
+    <link rel="stylesheet" href="css/Element.css"/>
+    <script src="js/jquery-1.11.3.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/Element.js"></script>
+    <script type="text/javascript" src="js/socket.io.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <style>
-        * {
+        body{
+            background: pink;
             margin: 0;
             padding: 0;
         }
-
-        body {
-            font: 14px "microsoft yahei", Arial, sans-serif;
-            color: #5e5e5e;
-            margin: 0;
-            padding: 0;
-            line-height: 24px;
+        #div{
+            padding:2vw;
+            overflow: auto;
         }
-
-        ul, p, h1, h2, h3, h4, h5, h6, dl, dd {
-            margin: 0;
-            padding: 0;
-            list-style: none;
+        .uname{
+            color:#e4393c;
         }
-
-        input {
-            border: 0;
+        .utext{
+            color:#5a5a5a;
         }
-
-        .lf {
-            float: left;
+        ::-webkit-scrollbar{
+            display:none;
         }
-
-        .rt {
-            float: right;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        img {
-            vertical-align: bottom;
-            border: none;
-        }
-
-        a {
-            color: #666;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: #FF0700;
-            text-decoration: none;
-        }
-
-        .clearfix:after {
-            height: 0;
-            visibility: hidden;
-            content: " ";
-            display: block;
-            clear: both;
-        }
-
-        i {
-            font-style: normal;
-        }
-
-        table {
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-        .logo{
-            height:60px;
-            width:300px;
-        }
-        #header{
-            height:60px;
-        }
-        .search{
-            width: 200px;
-            height:60px;
-        }
-        .login{
-            width: 80px;
-            height:60px;
-            color:#bbb;
-            line-height: 60px;
-            cursor: pointer;
-        }
-        .output {
-            display: block;
-            width: 240px;
-            height: 166px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .front img {
-            width: 100%;
-            height: 120px;
-        }
-
-        .front span {
-            display: inline-block;
-            padding-top: 4px;
-            padding-left: 10px;
-        }
-
-        .front em {
-            display: inline-block;
-            padding-bottom: 4px;
-            padding-left: 10px;
-            font-style: normal;
-            color: #999;
-        }
-
-        .front {
-            width: 100%;
-            z-index: 2;
-            background: #f8f8f8;
-        }
-
-        .back {
-            width: 100%;
-            z-index: 1;
-            height: 100%;
-            background: #f6f6f6;
-        }
-
-        .back:before {
-            display: table;
-            content: "";
-        }
-
-        .front, .back {
-            position: absolute;
-            top: 0;
-            left: 0;
-            backface-visibility: hidden;
-            transition: all 0.6s ease 0s;
-        }
-
-        .front {
-            transform: rotateY(0deg);
-        }
-
-        .back {
-            transform: rotateY(-180deg);
-            padding: 10px;;
-        }
-
-        .output:hover .front {
-            transform: rotateY(180deg);
-        }
-
-        .output:hover .back {
-            transform: rotateY(0);
-        }
-
-        .icon1_tmooc {
-            background: url("../img/watermark.png") center no-repeat;
-            display: block;
-            height: 80px;
-            width: 100%;;
-        }
-
-        .back p {
-            margin: 5px;
-        }
-
     </style>
 </head>
+
 <body>
-<div id="header" style="width: 100%;min-width:1200px;"></div>
-<div id="slide" style="width: 100%;min-width:1200px;"></div>
-<div id="main" style="width:100%;min-width: 1200px;margin:50px 0;"></div>
-<div id="footer" style="width:100%;min-width: 1200px;background:green;color:#fff;padding:20px 0;"></div>
-<script src="javascripts/homePage.js"></script>
-<style>
-    .el-menu{
-       background-color: #fff;
-        margin-left: 150px;
-    }
-    .el-menu-item.is-active{
-        color:green;
-        border-bottom: 5px solid green;
-    }
-    .el-menu--horizontal .el-menu-item:hover{
-        color:green;
-        border-bottom: 5px solid green;
-    }
-    .el-input{
-        margin-top: 12px;
-        margin-left: 100px;
-    }
-</style>
+<div id="app">
+    <h3 style="text-align: center;color:#e4393c;font-size: 5vw;">welcome LeeChat</h3>
+    <h5 style="text-align: center;font-size: 2vw;"></h5>
+    <div style="width: 80vw;margin:0 auto;height:60vh;border: 1px solid #aaa;" id="div">
+    </div>
+    <textarea  style="width:82vw;margin-left: 8vw;height:10vh;border: 1px solid #aaa;"></textarea><br/>
+    <div  style="width: 80vw;margin:0 auto;">
+        <el-button id="send" type="info">发送消息</el-button>
+        <el-button id="leave" type="danger">离开聊天</el-button>
+    </div>
+    <div id="kuang" style="width:100%;height:100%;background: pink;position:fixed;z-index: 1000;top:0;">
+        <div style="margin: 30% 10%;text-align: center">
+            <el-input v-model="input" placeholder="请输入用户名"></el-input>
+            <el-button id="yes" type="primary" style="margin-top: 5%">确定</el-button>
+        </div>
+    </div>
+</div>
 </body>
+<script>
+    var Main = {
+        data() {
+        return {
+            input: ''
+        }
+    }
+    }
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#app')
+    var name;
+    var socket;
+    var id=getRandom(1,10000000000000000);
+ $("#yes").click(function(){
+     name=$("input").val();
+     $("#kuang").hide();
+     socket=io.connect('localhost'),//与服务器进行连接
+             send=document.getElementById('send'),
+             leave=document.getElementById('leave');
+     socket.emit('add',name);
+     send.onclick=function(){
+         var msg=$("textarea").val();
+         socket.emit('sayTo',{id:id,name:name,msg:msg});
+         $("textarea").val("");
+     }
+     leave.onclick=function(){
+         window.location.href="about:blank";
+         window.close();
+         socket.emit('leave',name);
+     }
+     socket.on('c_add',function(msg){
+         alert(msg)
+     })
+     socket.on('c_leave',function(msg){
+         alert(msg)
+     })
+     socket.on('number',function(msg){
+         $("h5").html("当前在线人数:"+msg.number+"");
+     })
+     socket.on('message',function(msg){
+         var html="";
+         $.each(msg.msg,function(i,p){
+             if(p.id==id){
+                 html+=`<div style="width: 100%;text-align: right">
+                        <p class="uname">${p.name}:</p>
+                        <p class="utext">${p.msg}</p>
+                    </div>`
+             }else{
+                 html+=`<div style="width: 100%;text-align: left">
+                        <p class="uname">${p.name}:</p>
+                        <p class="utext">${p.msg}</p>
+                    </div>`
+             }
+         })
+         $("#div").html(html);
+         $("#div").scrollTop(100000);
+     })
+ })
+    function getRandom(min, max){
+        var r = Math.random() * (max - min);
+        var re = Math.round(r + min);
+        re = Math.max(Math.min(re, max), min)
+        return re;
+    }
+
+</script>
+
 </html>
